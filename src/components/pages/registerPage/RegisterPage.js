@@ -24,7 +24,6 @@ const [user, setUser] = useState(initialState)
     setUser(initialState);
   };
 
-
     return (
       <div className={styles.registerBox}>
         <h1>Please register</h1>

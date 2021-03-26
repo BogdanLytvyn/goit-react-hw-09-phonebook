@@ -1,8 +1,8 @@
-import React, { useState, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState} from 'react';
+import { useDispatch} from 'react-redux';
 import styles from '../pages/phoneBookPage/Phonebook.module.css';
-import { addContact, fetchContacts } from '../../redux/contacts/contactsOperation';
-import { getContacts } from '../../redux/contacts/contactsSelectors';
+import { addContact} from '../../redux/contacts/contactsOperation';
+
 
 const initialState = {
   name: '',
