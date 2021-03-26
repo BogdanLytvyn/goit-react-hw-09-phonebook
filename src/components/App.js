@@ -1,14 +1,13 @@
-import React, { Component, Suspense, lazy } from 'react';
+import React, { Suspense, lazy, useEffect } from 'react';
 import { Switch } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import AppBar from './appBar/AppBar';
 import Container from '../components/container/Conrainer';
 import { getCurrentUser } from '../redux/auth/authOperations';
-
 import styles from './App.module.css';
 import PrivateRoute from './routes/PrivateRoute';
 import PublicRoute from './routes/PublicRoute';
-import Loader from './loader/Loader';
+import Loader from './loader/Loader'
 
 const HomePage = lazy(() =>
   import('./pages/homePage/HomePage' /* webpackChunkName: "home-page" */),
@@ -23,12 +22,12 @@ const LoginPage = lazy(() =>
   import('./pages/loginPage/LoginPage' /* webpackChunkName: "login-page" */),
 );
 
-class App extends Component {
-  componentDidMount() {
-    this.props.onGetCurretnUser();
-  }
+const App =()=> {
+    const dispatch = useDispatch()
+useEffect(()=>{  dispatch(getCurrentUser());
+}, [dispatch])
 
-  render() {
+
     return (
       <div className={styles.appBox}>
         <Container className={styles.appBox}>
@@ -49,11 +48,8 @@ class App extends Component {
         </Container>
       </div>
     );
-  }
+
 }
 
-const mapDispatchToProps = {
-  onGetCurretnUser: getCurrentUser,
-};
+export default App;
 
-export default connect(null, mapDispatchToProps)(App);

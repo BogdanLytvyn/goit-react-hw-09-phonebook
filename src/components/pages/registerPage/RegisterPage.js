@@ -1,34 +1,34 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { register } from '../../../redux/auth/authOperations';
 import styles from './RgisterPage.module.css';
 
-class RegisterPage extends Component {
-  state = {
-    name: '',
-    email: '',
-    password: '',
+
+const initialState = {
+  name: '',
+  email: '',
+  password: '',
+};
+
+const RegisterPage =() => {
+const [user, setUser] = useState(initialState)
+  const dispatch = useDispatch()
+
+ const handleChange = ({ target: { name, value } }) => {
+   setUser(prevUser =>({...prevUser, [name]: value }));
   };
 
-  handleChange = ({ target: { name, value } }) => {
-    this.setState({ [name]: value });
-  };
-
-  handleSubmit = e => {
+  const handleSubmit = e => {
     e.preventDefault();
-
-    this.props.onRegister(this.state);
-
-    this.setState({ name: '', email: '', password: '' });
+    dispatch(register(user));
+    setUser(initialState);
   };
 
-  render() {
-    const { name, email, password } = this.state;
 
     return (
       <div className={styles.registerBox}>
         <h1>Please register</h1>
-        <form onSubmit={this.handleSubmit} className="mt-3" autoComplete="off">
+        <form onSubmit={handleSubmit} className="mt-3" autoComplete="off">
           <div className="mb-3">
             <label className="form-label">User name</label>
             <input
@@ -38,8 +38,8 @@ class RegisterPage extends Component {
               id="exampleInputName"
               aria-describedby="emailHelp"
               name="name"
-              value={name}
-              onChange={this.handleChange}
+              value={user.name}
+              onChange={handleChange}
             />
             <label className="form-label mt-3">Email address</label>
             <input
@@ -49,8 +49,8 @@ class RegisterPage extends Component {
               id="exampleInputEmail1"
               aria-describedby="emailHelp"
               name="email"
-              value={email}
-              onChange={this.handleChange}
+              value={user.email}
+              onChange={handleChange}
             />
             <div id="emailHelp" className="form-text">
               We'll never share your email with anyone else.
@@ -64,8 +64,8 @@ class RegisterPage extends Component {
               className="form-control"
               id="exampleInputPassword1"
               name="password"
-              value={password}
-              onChange={this.handleChange}
+              value={user.password}
+              onChange={handleChange}
             />
           </div>
           <button type="submit" className="btn btn-primary">
@@ -74,11 +74,7 @@ class RegisterPage extends Component {
         </form>
       </div>
     );
-  }
+
 }
 
-const mapDispatchToProps = {
-  onRegister: register,
-};
-
-export default connect(null, mapDispatchToProps)(RegisterPage);
+export default RegisterPage;

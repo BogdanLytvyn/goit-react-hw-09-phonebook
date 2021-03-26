@@ -1,12 +1,12 @@
 import React from 'react';
 import styles from './Contact.module.css';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { deleteContact } from '../../redux/contacts/contactsOperation';
 
-const Contact = ({ contact, onDeleteNumber }) => {
-  const deleteItem = () => {
-    onDeleteNumber(contact.id);
-  };
+const Contact = ({ contact}) => {
+  const dispatch = useDispatch();
+
+  const deleteItem = () => dispatch(deleteContact(contact.id))
 
   return (
     <>
@@ -20,8 +20,5 @@ const Contact = ({ contact, onDeleteNumber }) => {
   );
 };
 
-const mapDispatchToProps = dispatch => ({
-  onDeleteNumber: id => dispatch(deleteContact(id)),
-});
+export default Contact;
 
-export default connect(null, mapDispatchToProps)(Contact);

@@ -1,13 +1,14 @@
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import styles from '../pages/phoneBookPage/Phonebook.module.css';
-import { connect } from 'react-redux';
 import { changeFilter } from '../../redux/contacts/contactsActions';
 import { getFilter } from '../../redux/contacts/contactsSelectors';
 
-const Filter = ({ value, onChangeFilter }) => {
-  const onHadleFilter = evt => {
-    onChangeFilter(evt.target.value);
-  };
+const Filter = () => {
+  const dispatch = useDispatch();
+  const value = useSelector(getFilter);
+
+  const onHadleFilter = evt => dispatch(changeFilter(evt.target.value))
 
   return (
     <div className={styles.group}>
@@ -26,14 +27,6 @@ const Filter = ({ value, onChangeFilter }) => {
   );
 };
 
-const mapStateToProps = state => {
-  return {
-    filter: getFilter(state),
-  };
-};
 
-const mapDispatchToProps = dispatch => ({
-  onChangeFilter: filter => dispatch(changeFilter(filter)),
-});
+export default Filter;
 
-export default connect(mapStateToProps, mapDispatchToProps)(Filter);

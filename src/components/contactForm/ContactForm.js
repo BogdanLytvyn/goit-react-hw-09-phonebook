@@ -1,54 +1,42 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styles from '../pages/phoneBookPage/Phonebook.module.css';
-import { connect } from 'react-redux';
 import { addContact, fetchContacts } from '../../redux/contacts/contactsOperation';
 import { getContacts } from '../../redux/contacts/contactsSelectors';
 
-class ContactForm extends Component {
-  state = {
-    name: '',
-    number: '',
-  };
-  componentDidMount() {
-    this.props.fetchContacts();
+const initialState = {
+  name: '',
+  number: '',
+};
 
-  }
+const ContactForm = () => {
+  const [user, setUser] = useState(initialState);
+  const dispatch = useDispatch();
 
-  handleNameChange = e => {
-    const { name, value } = e.target;
-    this.setState({ [name]: value });
-  };
-
-  handleNumberChange = e => {
-    const { name, value } = e.target;
-    this.setState({ [name]: value });
+  const handleChange = e => {
+    setUser(prevUser => ({
+      ...prevUser,
+      [e.target.name]: e.target.value,
+    }));
   };
 
-  handleSubmit = e => {
+  const handleSubmit = e => {
     e.preventDefault();
-    if (!this.state.name || !this.state.number) return;
-
-    this.props.onAddContact({ ...this.state });
-
-    this.setState({
-      name: '',
-      number: '',
-    });
+    dispatch(addContact(user));
+    setUser(initialState);
   };
 
-  render() {
-    const { name, number } = this.state;
+
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={handleSubmit}>
         <div className={styles.group}>
           <input
             autoComplete="off"
             className={styles.input}
             type="text"
-            value={name}
+            value={user.name}
             name="name"
-            onChange={this.handleNameChange}
+            onChange={handleChange}
             required
           />
           <span className={styles.bar}></span>
@@ -59,9 +47,9 @@ class ContactForm extends Component {
             autoComplete="off"
             className={styles.input}
             type="tel"
-            value={number}
+            value={user.number}
             name="number"
-            onChange={this.handleNumberChange}
+            onChange={handleChange}
             required
           />
           <span className={styles.bar}></span>
@@ -73,22 +61,8 @@ class ContactForm extends Component {
         </button>
       </form>
     );
-  }
+
 }
 
-ContactForm.propTypes = {
-  onAddContact: PropTypes.func.isRequired,
-};
+export default ContactForm;
 
-const mapStateToProps = state => {
-  return {
-    items: getContacts(state),
-  };
-};
-
-const mapDispatchToProps = dispatch => ({
-  onAddContact: contact => dispatch(addContact(contact)),
-  fetchContacts: () => dispatch(fetchContacts()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ContactForm);
