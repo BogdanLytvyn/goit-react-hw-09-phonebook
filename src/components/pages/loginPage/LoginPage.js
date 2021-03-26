@@ -50,7 +50,7 @@ const LoginPage = ()=>  {
             />
           </div>
           <button type="submit" className="btn btn-success">
-            Log in
+            Log In
           </button>
         </form>
       </div>

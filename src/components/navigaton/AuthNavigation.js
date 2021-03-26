@@ -18,12 +18,12 @@ const AuthNav = () => (
   <div className="">
     <NavLink to="/register" exact style={styles.link} activeStyle={styles.activeLink}>
       <button className="btn btn-primary me-md-2" type="button">
-        Sing Up
+        Sign Up
       </button>
     </NavLink>
     <NavLink to="/login" exact style={styles.link} activeStyle={styles.activeLink}>
       <button className="btn btn-success " type="button">
-        Login
+        Log In
       </button>
     </NavLink>
   </div>
